@@ -1,12 +1,13 @@
 [Unit]
 Description=Swaybg to provide the desktop background
 Documentation=man:swaybg(1)
-PartOf=graphical-session.target
-After=sway.service
+PartOf=niri.service
+After=niri.service
 
 [Service]
 Type=simple
 ExecStart=/usr/bin/swaybg -i /home/$USER/Pictures/2.jpg -m fill
+Restart=on-failure
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=target.default
