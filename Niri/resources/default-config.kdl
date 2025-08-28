@@ -58,7 +58,7 @@ spawn-at-startup "xwayland-satellite"
 spawn-at-startup "/usr/bin/mate-polkit"
 spawn-at-startup "waybar"
 
-spawn-at-startup "swaybg -i ~/Pictures/1.jpg"
+spawn-at-startup "systemd-run --user swaybg -i ~/Pictures/1.jpg"
 
 
 environment {

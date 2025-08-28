@@ -95,6 +95,7 @@ OTHER_PACKAGES=(
     unzip
     dconf-cli
     nwg-look
+    #brightnessctl
 )
 
 echo "Installing core packages..."
