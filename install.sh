@@ -24,9 +24,10 @@ create_swayidle_service(){
     echo "Installing swayidle"
 
     install -Dm644 swayidle.service $HOME/.config/systemd/user/swayidle.service
-    systemctl --user add-wants niri.service swayidle.service
 
     systemctl --user daemon-reload
+
+    systemctl --user add-wants niri.service swayidle.service
 }
 
 intall_niri(){
@@ -130,8 +131,8 @@ sudo install -Dm755 xwayland-satellite/xwayland-satellite /usr/local/bin/xwaylan
 echo "Setting up greetd, gtkgreet"
 
 # /etc/greetd/environments --- //niri \n bash
-# sed -i "s|\$USER|$USER|g" greetd.config.toml
-# sudo cp -rf greetd.config.toml /etc/greetd/config.toml
+sed -i "s|\$USER|$USER|g" greetd.config.toml
+sudo cp -rf greetd.config.toml /etc/greetd/config.toml
 
 
 read -p "Install Optional packages? (y/n) " -n 1 -r
@@ -175,5 +176,7 @@ echo "Fonts installed: ${FONTS[*]}"
 
 echo "Instllation completed"
 
-###   base=$(basename $PWD) && cd .. && tar -czf $base.tar.gz $base && mv -f $base.tar.gz $base/$base.tar.gz && cd $base
+
+
+###   tar -cvzf niri_setup.tar.gz -C /home/vagelis/Documents --exclude='niri_setup/temp' niri_setup
 ###   curl -LO http://192.168.122.1:3923/niri_setup.tar.gz && tar xf niri_setup.tar.gz && rm niri_setup.tar.gz && cd niri_setup && chmod +x install.sh

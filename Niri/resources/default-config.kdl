@@ -58,6 +58,8 @@ spawn-at-startup "xwayland-satellite"
 spawn-at-startup "/usr/bin/mate-polkit"
 spawn-at-startup "waybar"
 
+
+spawn-at-startup "wl-paste --watch cliphist store"
 spawn-at-startup "systemd-run --user swaybg -i ~/Pictures/1.jpg"
 
 

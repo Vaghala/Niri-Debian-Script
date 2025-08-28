@@ -1,11 +1,9 @@
 [Unit]
 PartOf=graphical-session.target
-After=niri.session
+After=graphical-session.target
 Requisite=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/swayidle -w timeout 3600 'niri msg action power-off-monitors' timeout 4000 'swaylock -f' before-sleep 'swaylock -f'
 Restart=on-failure
 
-[Install]
-WantedBy=target.default
