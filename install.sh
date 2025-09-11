@@ -4,7 +4,7 @@ set -euo pipefail
 
 ######################################       FUNCTIONS        ##########################################
 
-install_ghostty(){
+install_ghostty_pkg(){
     echo "Installing Ghostty..."
 
     curl -LO "https://download.opensuse.org/repositories/home:/clayrisser:/sid/Debian_Unstable/${ARCH}/ghostty_1.1.3-4_${ARCH}.deb"
@@ -12,11 +12,19 @@ install_ghostty(){
     rm "ghostty_1.1.3-4_${ARCH}.deb"
 }
 
+install_ghostty_compiled(){
+    sudo install -Dm755 ghostty/ghostty /usr/bin/ghostty
+
+    #install dependencies...
+}
+
 create_swaybg_service(){
     echo "Installing swaybg"
 
     sed -i "s|\$USER|$USER|g" swaybg.service
+
     install -Dm644 swaybg.service $HOME/.config/systemd/user/swaybg.service
+
     systemctl --user add-wants niri.service swaybg.service
 }
 
@@ -25,9 +33,21 @@ create_swayidle_service(){
 
     install -Dm644 swayidle.service $HOME/.config/systemd/user/swayidle.service
 
-    systemctl --user daemon-reload
-
     systemctl --user add-wants niri.service swayidle.service
+}
+
+create_waybar_service(){
+    echo "Installing waybar service"
+    systemctl --user add-wants niri.service waybar.service
+    cp -r waybar $HOME/.config/waybar
+}
+
+create_polkit_servie(){
+    echo "Installing polkit"
+
+    install -Dm644 mate-polkit.service $HOME/.config/systemd/user/mate-polkit.service
+
+    systemctl --user add-wants niri.service mate-polkit.service
 }
 
 intall_niri(){
@@ -39,6 +59,24 @@ intall_niri(){
     sudo install -Dm644 Niri/resources/niri-portals.conf /usr/local/share/xdg-desktop-portal/niri-portals.conf
     sudo install -Dm644 Niri/resources/niri.service /etc/systemd/user/niri.service
     sudo install -Dm644 Niri/resources/niri-shutdown.target /etc/systemd/user/niri-shutdown.target
+
+    sudo sed -i "s|/usr/bin/niri|/usr/local/bin/niri|g" /etc/systemd/user/niri.service
+
+    mkdir -p $HOME/.config/niri
+    cp -rf ./Niri/resources/config.kdl $HOME/.config/niri/config.kdl
+}
+
+setup_greeter(){
+
+    
+
+    # sudo useradd -M -G video greeter
+    # #sudo chmod -R go+r /etc/greetd/
+    # echo "Setting up greetd, gtkgreet"
+    # sudo useradd greetd
+    # # /etc/greetd/environments --- //niri \n bash
+    # sudo sed -i "s|\$USER|$USER|g" greetd.config.toml
+    # sudo cp -rf greetd.config.toml /etc/greetd/config.toml
 
 }
 
@@ -56,7 +94,8 @@ for cmd in curl dpkg sudo; do
     command -v $cmd >/dev/null 2>&1 || { echo "$cmd is required but not installed."; exit 1; }
 done
 
-install_ghostty
+install_ghostty_pkg
+# install_ghostty_compiled
 
 # Install dependencies
 CORE_PACKAGES=(
@@ -65,10 +104,9 @@ CORE_PACKAGES=(
     libseat1
     libdisplay-info2
     xwayland
-    # xdg-desktop-portal-gtk
-    # xdg-desktop-portal-gnome
+    xdg-desktop-portal-gtk
     gnome-keyring
-    adwaita-icon-theme-legacy
+    mate-polkit-bin
     waybar
     swaybg
     fuzzel
@@ -79,8 +117,7 @@ CORE_PACKAGES=(
     greetd
     # gtkgreet
     dunst
-    mate-polkit-bin
-    #nwg-bar
+    adwaita-icon-theme-legacy
 )
 
 OTHER_PACKAGES=(
@@ -99,6 +136,13 @@ OTHER_PACKAGES=(
     #brightnessctl
 )
 
+FONTS=(
+    JetBrainsMono
+    AdwaitaMono
+    UbuntuSans
+    Iosevka
+)
+
 echo "Installing core packages..."
 sudo apt update && sudo apt upgrade -y
 sudo apt install --no-install-recommends "${CORE_PACKAGES[@]}" -y
@@ -107,33 +151,21 @@ mkdir -p $HOME/Pictures
 cp -rf ./Pictures/*.jpg $HOME/Pictures/
 mkdir -p $HOME/.config/systemd/user/
 
-intall_niri
-
-echo "Installing waybar service"
-systemctl --user add-wants niri.service waybar.service
-cp -r waybar $HOME/.config/waybar
-
-
-# TODO: Install as a service
-#       dunst
-
-#create_swaybg_service
-
-create_swayidle_service
-
 echo "Installing xwayland-satellite..."
 sudo install -Dm755 xwayland-satellite/xwayland-satellite /usr/local/bin/xwayland-satellite
 
+intall_niri
 
-#echo "Installing polkit"
+create_waybar_service
 
+create_swaybg_service
 
-echo "Setting up greetd, gtkgreet"
+create_swayidle_service
 
-# /etc/greetd/environments --- //niri \n bash
-sed -i "s|\$USER|$USER|g" greetd.config.toml
-sudo cp -rf greetd.config.toml /etc/greetd/config.toml
+setup_greeter
 
+systemctl --user daemon-reload
+#################               OPTIONAL            ####################
 
 read -p "Install Optional packages? (y/n) " -n 1 -r
 echo
@@ -146,17 +178,6 @@ else
     echo "Skipping system install"
 fi
 
-mkdir $HOME/.config/niri
-cp -rf ./Niri/resources/default-config.kdl $HOME/.config/niri/config.kdl
-
-
-
-FONTS=(
-    JetBrainsMono
-    AdwaitaMono
-    UbuntuSans
-    Iosevka
-)
 
 FONT_DIR="$HOME/.local/share/fonts"
 mkdir -p "$FONT_DIR"
@@ -178,5 +199,5 @@ echo "Instllation completed"
 
 
 
-###   tar -cvzf niri_setup.tar.gz -C /home/vagelis/Documents --exclude='niri_setup/temp' niri_setup
+###   cd /home/$USER/Documents/ && tar -czf niri_setup.tar.gz -C /home/$USER/Documents --exclude='niri_setup/temp' --exclude='niri_setup/.git' niri_setup && mv niri_setup.tar.gz /home/$USER/Documents/niri_setup/ && cd /home/$USER/Documents/niri_setup/
 ###   curl -LO http://192.168.122.1:3923/niri_setup.tar.gz && tar xf niri_setup.tar.gz && rm niri_setup.tar.gz && cd niri_setup && chmod +x install.sh

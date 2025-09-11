@@ -1,138 +1,46 @@
 {
+    // General Waybar settings
     "layer": "top",
     "position": "top",
-    "spacing": 0,
-    "height": 34,
-    "modules-left": [
-        "custom/logo",
-        "hyprland/workspaces"
-    ],
-    "modules-center": [
-        "clock"
-    ],
-    "modules-right": [
-        "tray",
-        "memory",
-        "network",
-        "wireplumber",
-        "battery",
-        "custom/power"
-    ],
-    "wlr/taskbar": {
-        "format": "{icon}",
-        "on-click": "activate",
-        "on-click-right": "fullscreen",
-        "icon-theme": "WhiteSur",
-        "icon-size": 25,
-        "tooltip-format": "{title}"
+    "height": 35,
+    "spacing": 4,
+
+    // Module configuration
+    "modules-left": ["niri/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": ["network", "custom/launcher", "custom/power"],
+
+    // Module-specific settings
+    "niri/workspaces": {
+        "all-outputs": true,
+        "format": "{name}",
+        "on-click": "activate"
     },
-    "hyprland/workspaces": {
-        "on-click": "activate",
-        "format": "{icon}",
-        "format-icons": {
-            "default": "",
-            "1": "1",
-            "2": "2",
-            "3": "3",
-            "4": "4",
-            "5": "5",
-            "6": "6",
-            "7": "7",
-            "8": "8",
-            "9": "9",
-            "active": "󱓻",
-            "urgent": "󱓻"
-        },
-        "persistent-workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": []
-        }
-    },
-    "memory": {
-        "interval": 5,
-        "format": "󰍛 {}%",
-        "max-length": 10
-    },
-    "tray": {
-        "spacing": 10
-    },
+
     "clock": {
-        "tooltip-format": "{calendar}",
-        "format-alt": "  {:%a, %d %b %Y}",
-        "format": "  {:%I:%M %p}"
+        "format": "{:%A, %d %B - %H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
+
     "network": {
-        "format-wifi" : "{icon}",
-        "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"],
-        "format-ethernet": "󰀂",
-	"format-alt" : "󱛇",
-        "format-disconnected" : "󰖪",
-	"tooltip-format-wifi": "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-        "tooltip-format-ethernet": "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-	"tooltip-format-disconnected": "Disconnected",
-	"interval": 5,
-	"nospacing": 1,
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+        "format-disconnected": "Disconnected ⚠",
+        "tooltip-format": "{ifname} via {gwaddr} ",
+        "on-click": "nm-connection-editor" // Opens network manager GUI
     },
-    "wireplumber": {
-        "format": "{icon}",
-        "format-bluetooth": "󰂰",
-        "nospacing": 1,
-        "tooltip-format": "Volume : {volume}%",
-        "format-muted": "󰝟",
-        "format-icons": {
-            "headphone": "",
-            "default": ["󰖀","󰕾",""]
-        },
-        "on-click": "pamixer -t",
-        "scroll-step": 1
+    
+    "custom/launcher": {
+        "format": "", // Icon for Fuzzel (Nerd Font: nf-mdi-apps)
+        "on-click": "fuzzel",
+        "tooltip": true,
+        "tooltip-text": "Application Launcher"
     },
-    "custom/logo": {
-        "format": "  ",
-        "tooltip": false,
-        "on-click": "fuzzel &"
-    },
-    "battery": {
-        "format": "{capacity}% {icon}",
-        "format-icons": {
-            "charging": [
-                "󰢜",
-                "󰂆",
-                "󰂇",
-                "󰂈",
-                "󰢝",
-                "󰂉",
-                "󰢞",
-                "󰂊",
-                "󰂋",
-                "󰂅"
-            ],
-            "default": [
-                "󰁺",
-                "󰁻",
-                "󰁼",
-                "󰁽",
-                "󰁾",
-                "󰁿",
-                "󰂀",
-                "󰂁",
-                "󰂂",
-                "󰁹"
-            ]
-        },
-        "format-full": "Charged ",
-        "interval": 5,
-        "states": {
-            "warning": 20,
-            "critical": 10
-        },
-        "tooltip": false
-    },
+
     "custom/power": {
-        "format": "󰤆",
-        "tooltip": false,
-        "on-click": "wlogout &"
+        "format": "", // Icon for Power Menu (Nerd Font: nf-fa-power_off)
+        "on-click": "wlogout",
+        "tooltip": true,
+        "tooltip-text": "Power Menu"
     }
 }

@@ -1,0 +1,12 @@
+[Unit]
+Description=Policy prompter
+PartOf=niri.service
+After=niri.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mate-polkit
+Restart=on-failure
+
+[Install]
+WantedBy=target.default

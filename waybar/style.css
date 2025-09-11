@@ -1,133 +1,78 @@
+/* General styling for all elements */
 * {
-  border: none;
-  border-radius: 0;
-  min-height: 0;
-  font-family: JetBrainsMono Nerd Font;
-  font-size: 13px;
+    border: none;
+    border-radius: 0;
+    /* Use a Nerd Font for icons */
+    font-family: "JetBrainsMono Nerd Font", FontAwesome, sans-serif;
+    font-size: 14px;
+    min-height: 0;
 }
 
+/* The main bar */
 window#waybar {
-  background-color: #181825;
-  transition-property: background-color;
-  transition-duration: 0.5s;
+    background: rgba(30, 30, 46, 0.85); /* Dark background with some transparency */
+    color: #cdd6f4; /* Light text color */
+    transition-property: background-color;
+    transition-duration: .5s;
 }
 
-window#waybar.hidden {
-  opacity: 0.5;
-}
-
-#workspaces {
-  background-color: transparent;
-}
-
-#workspaces button {
-  all: initial;
-  /* Remove GTK theme values (waybar #1351) */
-  min-width: 0;
-  /* Fix weird spacing in materia (waybar #450) */
-  box-shadow: inset 0 -3px transparent;
-  /* Use box-shadow instead of border so the text isn't offset */
-  padding: 6px 18px;
-  margin: 6px 3px;
-  border-radius: 4px;
-  background-color: #1e1e2e;
-  color: #cdd6f4;
-}
-
-#workspaces button.active {
-  color: #1e1e2e;
-  background-color: #cdd6f4;
-}
-
-#workspaces button:hover {
-  box-shadow: inherit;
-  text-shadow: inherit;
-  color: #1e1e2e;
-  background-color: #cdd6f4;
-}
-
-#workspaces button.urgent {
-  background-color: #f38ba8;
-}
-
-#memory,
-#custom-power,
-#battery,
-#backlight,
-#wireplumber,
-#network,
+/* Style for all modules */
+#workspaces,
 #clock,
-#tray {
-  border-radius: 4px;
-  margin: 6px 3px;
-  padding: 6px 12px;
-  background-color: #1e1e2e;
-  color: #181825;
+#network,
+#custom-power,
+#custom-launcher {
+    padding: 0 10px;
+    margin: 2px 0px;
 }
 
-#custom-power {
-  margin-right: 6px;
+/* Style for workspaces */
+#workspaces button {
+    color: #a6adc8; /* Color for inactive workspaces */
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 2px 8px;
 }
 
-#custom-logo {
-  padding-right: 7px;
-  padding-left: 7px;
-  margin-left: 5px;
-  font-size: 15px;
-  border-radius: 8px 0px 0px 8px;
-  color: #1793d1;
+/* Style for the active workspace */
+#workspaces button.active {
+    background-color: #89b4fa; /* A nice blue for the active workspace */
+    color: #1e1e2e; /* Dark text on the active button */
 }
 
-#memory {
-  background-color: #fab387;
+/* Style for buttons on hover */
+#workspaces button:hover {
+    background: #45475a;
+    box-shadow: inherit;
+    text-shadow: inherit;
 }
 
-#battery {
-  background-color: #f38ba8;
-}
-
-#battery.warning,
-#battery.critical,
-#battery.urgent {
-  background-color: #ff0000;
-  color: #FFFF00;
-}
-
-#battery.charging {
-  background-color: #a6e3a1;
-  color: #181825;
-}
-
-#backlight {
-  background-color: #fab387;
-}
-
-#wireplumber {
-  background-color: #f9e2af;
-}
-
-#network {
-  background-color: #94e2d5;
-  padding-right: 17px;
-}
-
+/* Style for the clock module */
 #clock {
-  font-family: JetBrainsMono Nerd Font;
-  background-color: #cba6f7;
+    color: #fab387; /* Orange color */
 }
 
+/* Style for the network module */
+#network {
+    color: #89b4fa; /* Blue color */
+}
+
+#network.disconnected {
+    color: #f38ba8; /* Red color when disconnected */
+}
+
+/* Style for the custom power/logout button */
 #custom-power {
-  background-color: #f2cdcd;
+    color: #f38ba8; /* Red color */
+    background-color: #313244;
+    border-radius: 5px;
+    margin-right: 6px;
 }
 
-
-tooltip {
-  border-radius: 8px;
-  padding: 15px;
-  background-color: #131822;
-}
-
-tooltip label {
-  padding: 5px;
-  background-color: #131822;
+/* Style for the custom launcher button */
+#custom-launcher {
+    color: #a6e3a1; /* Green color */
+    background-color: #313244;
+    border-radius: 5px;
+    margin-right: 3px;
 }
