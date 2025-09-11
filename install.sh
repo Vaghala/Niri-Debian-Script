@@ -67,9 +67,7 @@ intall_niri(){
 }
 
 setup_greeter(){
-
-    
-
+    echo "lol"
     # sudo useradd -M -G video greeter
     # #sudo chmod -R go+r /etc/greetd/
     # echo "Setting up greetd, gtkgreet"
@@ -117,6 +115,7 @@ CORE_PACKAGES=(
     greetd
     # gtkgreet
     dunst
+    libnotify-bin
     adwaita-icon-theme-legacy
 )
 
@@ -199,5 +198,5 @@ echo "Instllation completed"
 
 
 
-###   cd /home/$USER/Documents/ && tar -czf niri_setup.tar.gz -C /home/$USER/Documents --exclude='niri_setup/temp' --exclude='niri_setup/.git' niri_setup && mv niri_setup.tar.gz /home/$USER/Documents/niri_setup/ && cd /home/$USER/Documents/niri_setup/
+###   rm /home/vagelis/Documents/niri_setup/niri_setup.tar.gz && cd /home/$USER/Documents/ && tar -czf niri_setup.tar.gz -C /home/$USER/Documents --exclude='niri_setup/temp' --exclude='niri_setup/.git' niri_setup && mv niri_setup.tar.gz /home/$USER/Documents/niri_setup/ && cd /home/$USER/Documents/niri_setup/
 ###   curl -LO http://192.168.122.1:3923/niri_setup.tar.gz && tar xf niri_setup.tar.gz && rm niri_setup.tar.gz && cd niri_setup && chmod +x install.sh
